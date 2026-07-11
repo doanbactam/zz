@@ -387,10 +387,7 @@ mod tests {
 
     #[test]
     fn test_slugify_task_name() {
-        assert_eq!(
-            slugify_task_name("Git PR creation"),
-            "git-pr-creation"
-        );
+        assert_eq!(slugify_task_name("Git PR creation"), "git-pr-creation");
         assert_eq!(slugify_task_name("Hello World!!"), "hello-world");
         assert_eq!(slugify_task_name("  spaced  out  "), "spaced-out");
     }

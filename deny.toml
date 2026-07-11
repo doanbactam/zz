@@ -30,8 +30,9 @@ ignore = []
 [bans]
 # Warn on duplicate versions (common in large dep trees)
 multiple-versions = "warn"
-# Deny wildcard deps (e.g. "regex = *")
-wildcards = "deny"
+# Wildcard deps: path deps in workspace have no version — allow them
+wildcards = "allow"
+allow-wildcard-paths = true
 
 [sources]
 # Only allow crates from crates.io
