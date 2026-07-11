@@ -1,5 +1,4 @@
-# cargo-deny configuration — ZeroZero
-# Verified 2026-07-05: cargo-deny 0.19.9
+# cargo-deny configuration
 # Docs: https://embarkstudios.github.io/cargo-deny/checks/
 
 [licenses]
@@ -29,11 +28,10 @@ deny = [
 confidence-threshold = 0.8
 
 [advisories]
-db-path = "~/.cargo/advisory-db"
+db-path = "~/.cargo/advisory-dbs"
 db-urls = ["https://github.com/rustsec/advisory-db"]
-vulnerability = "deny"
-unmaintained = "warn"
 yanked = "deny"
+unmaintained = "workspace"
 ignore = []
 
 [bans]
@@ -41,8 +39,6 @@ ignore = []
 multiple-versions = "warn"
 # Deny wildcard deps (e.g. "regex = *")
 wildcards = "deny"
-# Allow build-only deps to duplicate
-allow-build-scripts = true
 
 [sources]
 # Only allow crates from crates.io
