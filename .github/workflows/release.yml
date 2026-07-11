@@ -61,7 +61,7 @@ jobs:
         run: cargo dist build --target ${{ matrix.target }} --output-format=dir
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: artifacts-${{ matrix.target }}
           path: target/distrib/
