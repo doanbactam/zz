@@ -1,0 +1,20 @@
+[package]
+name = "zerozero-llm"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+reqwest.workspace = true
+tokio.workspace = true
+async-trait.workspace = true
+futures.workspace = true
+anyhow.workspace = true
+serde = { workspace = true }
+base64 = "0.22"
+serde_json = { workspace = true }
+bytes = "1"
+
+[dev-dependencies]
+wiremock.workspace = true

@@ -1,0 +1,15 @@
+[package]
+name = "zerozero-compaction"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+
+[dependencies]
+zerozero-llm = { path = "../llm" }
+tokio = { workspace = true }
+futures = { workspace = true }
+anyhow = { workspace = true }
+
+[dev-dependencies]
+async-trait = { workspace = true }
+serde_json = { workspace = true }

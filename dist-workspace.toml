@@ -1,0 +1,39 @@
+# cargo-dist configuration — ZeroZero
+# Verified 2026-07-05: cargo-dist 0.32.0
+# Docs: https://opensource.axo.dev/cargo-dist/book/config/
+
+[dist]
+dist = true
+rust-toolchain-version = "stable"
+
+# Installers: shell (linux/macOS), powershell (Windows)
+installers = ["shell", "powershell"]
+
+# Build targets — multi-platform binaries
+targets = [
+    "x86_64-unknown-linux-gnu",
+    "x86_64-unknown-linux-musl",
+    "aarch64-unknown-linux-gnu",
+    "aarch64-unknown-linux-musl",
+    "x86_64-apple-darwin",
+    "aarch64-apple-darwin",
+    "x86_64-pc-windows-msvc",
+]
+
+# CI provider
+ci = ["github"]
+
+# Checksums for integrity verification
+checksum = "sha256"
+
+# Plan mode: cargo-dist generates workflow but doesn't auto-publish
+pr-run-mode = "plan"
+
+# GitHub Release
+github-releases = true
+
+# Only build the main binary (zz)
+dist = true
+
+# Repository
+repository = "doanbactam/zz"

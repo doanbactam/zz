@@ -1,0 +1,32 @@
+[package]
+name = "zerozero-tui"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+ratatui.workspace = true
+crossterm = { workspace = true, features = ["event-stream"] }
+tokio.workspace = true
+anyhow.workspace = true
+serde_json.workspace = true
+futures.workspace = true
+pulldown-cmark.workspace = true
+syntect.workspace = true
+zerozero-core = { path = "../core" }
+zerozero-llm = { path = "../llm" }
+zerozero-exec = { path = "../exec" }
+zerozero-tools = { path = "../tools" }
+zerozero-sandbox = { path = "../sandbox" }
+zerozero-compaction = { path = "../compaction" }
+zerozero-skills = { path = "../skills" }
+zerozero-plugins = { path = "../plugins" }
+zerozero-session = { path = "../session" }
+zerozero-multi-agent = { path = "../multi-agent" }
+arboard = "3.6.1"
+tempfile = "3"
+
+[dev-dependencies]
+insta.workspace = true
+portable-pty.workspace = true

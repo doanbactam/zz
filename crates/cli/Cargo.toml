@@ -1,0 +1,287 @@
+[package]
+name = "zerozero-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+description.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lib]
+name = "zerozero_cli"
+path = "src/lib.rs"
+
+[[bin]]
+name = "zz"
+path = "src/main.rs"
+
+[dependencies]
+zerozero-tui = { path = "../tui" }
+zerozero-exec = { path = "../exec" }
+zerozero-llm = { path = "../llm" }
+zerozero-core = { path = "../core" }
+zerozero-tools = { path = "../tools" }
+zerozero-sandbox = { path = "../sandbox" }
+zerozero-session = { path = "../session" }
+zerozero-compaction = { path = "../compaction" }
+zerozero-multi-agent = { path = "../multi-agent" }
+zerozero-plugins = { path = "../plugins" }
+ratatui.workspace = true
+crossterm.workspace = true
+clap.workspace = true
+anyhow.workspace = true
+serde = { workspace = true, features = ["derive"] }
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "net", "io-util", "sync"] }
+serde_json.workspace = true
+dotenvy = "0.15.7"
+zerozero-skills = { version = "0.1.0", path = "../skills" }
+
+[dev-dependencies]
+assert_cmd.workspace = true
+predicates.workspace = true
+portable-pty.workspace = true
+serde_json.workspace = true
+wiremock.workspace = true
+tokio.workspace = true
+tempfile = "3"
+futures.workspace = true
+async-trait.workspace = true
+zerozero-session = { path = "../session" }
+zerozero-multi-agent = { path = "../multi-agent" }
+zerozero-llm = { path = "../llm" }
+zerozero-tools = { path = "../tools" }
+zerozero-sandbox = { path = "../sandbox" }
+zerozero-compaction = { path = "../compaction" }
+crossterm.workspace = true
+
+[[test]]
+name = "e2e_prd1_help"
+path = "tests/e2e/e2e_prd1_help.rs"
+
+[[test]]
+name = "e2e_prd1_version"
+path = "tests/e2e/e2e_prd1_version.rs"
+
+[[test]]
+name = "e2e_prd1_tui_helloworld"
+path = "tests/e2e/e2e_prd1_tui_helloworld.rs"
+
+[[test]]
+name = "e2e_prd2_exec_help"
+path = "tests/e2e/e2e_prd2_exec_help.rs"
+
+[[test]]
+name = "e2e_prd2_exec_jsonl"
+path = "tests/e2e/e2e_prd2_exec_jsonl.rs"
+
+[[test]]
+name = "e2e_prd2_exec_stdin"
+path = "tests/e2e/e2e_prd2_exec_stdin.rs"
+
+[[test]]
+name = "e2e_prd3_llm_call"
+path = "tests/e2e/e2e_prd3_llm_call.rs"
+
+[[test]]
+name = "e2e_prd3_no_api_key"
+path = "tests/e2e/e2e_prd3_no_api_key.rs"
+
+[[test]]
+name = "e2e_auth"
+path = "tests/e2e/e2e_auth.rs"
+
+[[test]]
+name = "e2e_prd3_http_error"
+path = "tests/e2e/e2e_prd3_http_error.rs"
+
+[[test]]
+name = "e2e_prd3_streaming"
+path = "tests/e2e/e2e_prd3_streaming.rs"
+
+[[test]]
+name = "e2e_prd4_tools_in_request"
+path = "tests/e2e/e2e_prd4_tools_in_request.rs"
+
+[[test]]
+name = "e2e_prd4_multi_turn"
+path = "tests/e2e/e2e_prd4_multi_turn.rs"
+
+[[test]]
+name = "e2e_prd4_tool_events"
+path = "tests/e2e/e2e_prd4_tool_events.rs"
+
+[[test]]
+name = "e2e_prd4_max_turns"
+path = "tests/e2e/e2e_prd4_max_turns.rs"
+
+[[test]]
+name = "e2e_prd5_approval_deny"
+path = "tests/e2e/e2e_prd5_approval_deny.rs"
+
+[[test]]
+name = "e2e_prd5_approval_never"
+path = "tests/e2e/e2e_prd5_approval_never.rs"
+
+[[test]]
+name = "e2e_prd6_session_persist"
+path = "tests/e2e/e2e_prd6_session_persist.rs"
+
+[[test]]
+name = "e2e_prd6_compaction"
+path = "tests/e2e/e2e_prd6_compaction.rs"
+
+[[test]]
+name = "e2e_prd6_sessions_list"
+path = "tests/e2e/e2e_prd6_sessions_list.rs"
+
+[[test]]
+name = "e2e_prd9_sandbox_apply"
+path = "tests/e2e/e2e_prd9_sandbox_apply.rs"
+
+[[test]]
+name = "e2e_prd11_anthropic_provider"
+path = "tests/e2e/e2e_prd11_anthropic_provider.rs"
+
+[[test]]
+name = "e2e_gen0_gen1_gate"
+path = "tests/e2e/e2e_gen0_gen1_gate.rs"
+
+[[test]]
+name = "e2e_plugins"
+path = "tests/e2e/e2e_plugins.rs"
+
+[[test]]
+name = "e2e_eval"
+path = "tests/e2e/e2e_eval.rs"
+
+[[test]]
+name = "e2e_version"
+path = "tests/e2e/e2e_version.rs"
+
+[[test]]
+name = "e2e_config"
+path = "tests/e2e/e2e_config.rs"
+
+[[test]]
+name = "e2e_init"
+path = "tests/e2e/e2e_init.rs"
+
+[[test]]
+name = "e2e_json_pretty"
+path = "tests/e2e/e2e_json_pretty.rs"
+
+[[test]]
+name = "e2e_cli_flags"
+path = "tests/e2e/e2e_cli_flags.rs"
+
+[[test]]
+name = "e2e_approval_model_flags"
+path = "tests/e2e/e2e_approval_model_flags.rs"
+
+[[test]]
+name = "e2e_provider_flag"
+path = "tests/e2e/e2e_provider_flag.rs"
+
+[[test]]
+name = "e2e_system_prompt_flag"
+path = "tests/e2e/e2e_system_prompt_flag.rs"
+
+[[test]]
+name = "e2e_no_skills_flag"
+path = "tests/e2e/e2e_no_skills_flag.rs"
+
+[[test]]
+name = "e2e_quiet_flag"
+path = "tests/e2e/e2e_quiet_flag.rs"
+
+[[test]]
+name = "e2e_output_flag"
+path = "tests/e2e/e2e_output_flag.rs"
+
+[[test]]
+name = "e2e_output_styles"
+path = "tests/e2e/e2e_output_styles.rs"
+
+[[test]]
+name = "e2e_dry_run_flag"
+path = "tests/e2e/e2e_dry_run_flag.rs"
+
+[[test]]
+name = "e2e_continue_flag"
+path = "tests/e2e/e2e_continue_flag.rs"
+
+[[test]]
+name = "e2e_prd76_syntax_highlighting"
+path = "tests/e2e/e2e_prd76_syntax_highlighting.rs"
+
+[[test]]
+name = "e2e_plan_mode"
+path = "tests/e2e/e2e_plan_mode.rs"
+
+[[test]]
+name = "e2e_prd92_eval_restore"
+path = "tests/e2e/e2e_prd92_eval_restore.rs"
+
+[[test]]
+name = "e2e_prd97_ac1_spawn_agent"
+path = "tests/e2e/e2e_prd97_ac1_spawn_agent.rs"
+
+[[test]]
+name = "e2e_prd97_ac2_schema_migration"
+path = "tests/e2e/e2e_prd97_ac2_schema_migration.rs"
+
+[[test]]
+name = "e2e_prd97_ac3_agent_picker"
+path = "tests/e2e/e2e_prd97_ac3_agent_picker.rs"
+
+[[test]]
+name = "e2e_prd97_ac4_steer_interrupt"
+path = "tests/e2e/e2e_prd97_ac4_steer_interrupt.rs"
+
+[[test]]
+name = "e2e_prd97_ac5_tree_approval"
+path = "tests/e2e/e2e_prd97_ac5_tree_approval.rs"
+
+[[test]]
+name = "e2e_prd97_ac6_consolidate"
+path = "tests/e2e/e2e_prd97_ac6_consolidate.rs"
+
+[[test]]
+name = "e2e_prd98_rewind"
+path = "tests/e2e/e2e_prd98_rewind.rs"
+
+[[test]]
+name = "e2e_prd99_hook_events"
+path = "tests/e2e/e2e_prd99_hook_events.rs"
+
+[[test]]
+name = "e2e_prd100_effort"
+path = "tests/e2e/e2e_prd100_effort.rs"
+
+[[test]]
+name = "e2e_prd100_model_command"
+path = "tests/e2e/e2e_prd100_model_command.rs"
+
+[[test]]
+name = "e2e_session_show"
+path = "tests/e2e/e2e_session_show.rs"
+
+[[test]]
+name = "e2e_config_set"
+path = "tests/e2e/e2e_config_set.rs"
+
+[[test]]
+name = "e2e_doctor"
+path = "tests/e2e/e2e_doctor.rs"
+
+[[test]]
+name = "e2e_exec_file_prompt"
+path = "tests/e2e/e2e_exec_file_prompt.rs"
+
+[[test]]
+name = "e2e_exec_include"
+path = "tests/e2e/e2e_exec_include.rs"

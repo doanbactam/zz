@@ -1,0 +1,45 @@
+name: Release PR (release-plz)
+
+# release-plz automatically opens a Release PR when commits are pushed to main.
+# The PR bumps version, updates changelog (via git-cliff), and runs semver checks.
+# Merging the Release PR creates a git tag and publishes to crates.io.
+#
+# Verified 2026-07-05: release-plz 0.3.159
+# Docs: https://release-plz.dev/docs/github/quickstart
+
+on:
+  push:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  release-plz:
+    name: Release PR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: release-plz-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Run release-plz
+        uses: release-plz/action@v0.3
+        with:
+          command: release-pr
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

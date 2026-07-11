@@ -1,0 +1,22 @@
+[package]
+name = "zerozero-tools"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+async-trait.workspace = true
+anyhow.workspace = true
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true, features = ["process", "time", "sync", "io-util", "io-std", "net", "rt"] }
+reqwest = { workspace = true }
+regex = "1.12"
+portable-pty.workspace = true
+zerozero-sandbox = { path = "../sandbox" }
+zerozero-mcp = { path = "../mcp" }
+
+[dev-dependencies]
+tempfile = "3.27.0"
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "process", "time"] }

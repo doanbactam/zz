@@ -1,0 +1,22 @@
+# release-plz configuration — ZeroZero
+# Verified 2026-07-05: release-plz 0.3.159
+# Docs: https://release-plz.dev/docs/configuration
+
+[workspace]
+# release-plz manages versioning for the entire workspace.
+# Only zerozero-cli is published to crates.io; other crates are path deps.
+
+[[package]]
+name = "zerozero-cli"
+# The only publishable crate — the `zz` binary.
+# Path deps (core, llm, tools, tui, exec, sandbox, session, compaction, mcp)
+# are not published individually.
+
+[workspace.changelog]
+# Use git-cliff for changelog generation
+update_changelog_on_release = true
+
+[workspace.git]
+# Conventional Commits → version bump
+# feat: → minor, fix: → patch, feat!: → major
+conventional_commits = true

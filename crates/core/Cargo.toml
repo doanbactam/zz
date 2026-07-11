@@ -1,0 +1,26 @@
+[package]
+name = "zerozero-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+zerozero-llm = { path = "../llm" }
+zerozero-exec = { path = "../exec" }
+zerozero-tools = { path = "../tools" }
+zerozero-sandbox = { path = "../sandbox" }
+zerozero-session = { path = "../session" }
+zerozero-compaction = { path = "../compaction" }
+tokio.workspace = true
+anyhow.workspace = true
+futures.workspace = true
+serde_json.workspace = true
+async-trait = { workspace = true }
+toml = "1.1.2"
+reqwest = { workspace = true, features = ["json"] }
+serde = { workspace = true, features = ["derive"] }
+
+[dev-dependencies]
+wiremock = "0.6"
+tempfile = "3"

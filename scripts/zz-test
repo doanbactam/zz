@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+# zz-test — cargo test wrapper with memory isolation for ZeroZero
+#
+# Problem:
+#   The `zerozero_llm-*` test binary loads the local LLM provider (~15GB RSS)
+#   when running e2e tests with wiremock + PTY. On a 15GB RAM machine with no
+#   swap, the OOM killer kills the process, crashing Devin/tmux. This wrapper:
+#     1. Checks that swap is enabled (warns if not).
+#     2. Runs cargo test via `systemd-run --scope` with MemoryMax so the test
+#        gets killed instead of causing a system-wide OOM.
+#     3. Limits test threads to 1 by default (avoids 2 LLM test binaries
+#        running in parallel × 15GB = 30GB).
+#     4. Captures exit code + full log.
+#
+# Usage (instead of calling `cargo test` directly):
+#   scripts/zz-test                              # cargo test --workspace
+#   scripts/zz-test --test e2e_prd92_eval_restore
+#   scripts/zz-test --test e2e_prd76_syntax_highlighting -- --nocapture
+#   scripts/zz-test nextest                       # cargo nextest run
+#   scripts/zz-test mutants --in-diff             # cargo mutants
+#
+# Exit code: the exit code of the inner cargo command.
+
+set -euo pipefail
+
+# --- config ---
+MEM_MAX="${ZZ_TEST_MEM_MAX:-12G}"          # RAM limit for the test scope
+TEST_THREADS="${ZZ_TEST_THREADS:-1}"       # default 1 thread (heavy LLM binary)
+USE_SYSTEMD="${ZZ_TEST_SYSTEMD:-auto}"     # auto | yes | no
+LOG_DIR="${ZZ_TEST_LOG_DIR:-/tmp/zz-test-logs}"
+
+# --- preflight: swap check ---
+swap_kb=$(awk '/SwapTotal/{print $2}' /proc/meminfo 2>/dev/null || echo 0)
+if [ "$swap_kb" -lt 4194304 ]; then
+  echo "WARN: Swap < 4GB (${swap_kb}kB). LLM test binary ~15GB RSS may cause OOM." >&2
+  echo "      Create swap: fallocate -l 16G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile" >&2
+fi
+
+# --- detect systemd-run availability ---
+if [ "$USE_SYSTEMD" = "auto" ]; then
+  if command -v systemd-run >/dev/null 2>&1 && [ -d /run/systemd/system ]; then
+    USE_SYSTEMD=yes
+  else
+    USE_SYSTEMD=no
+  fi
+fi
+
+# --- parse subcommand ---
+subcmd="test"
+case "${1:-}" in
+  nextest)  subcmd="nextest"; shift ;;
+  mutants)  subcmd="mutants"; shift ;;
+esac
+
+# --- build cargo command ---
+case "$subcmd" in
+  test)
+    cargo_args=(cargo test "$@")
+    # inject --test-threads=1 if user hasn't specified it
+    if [[ " $* " != *"--test-threads"* && " $* " != *" -Z "* ]]; then
+      if [[ " $* " == *" -- "* ]]; then
+        cargo_args+=(--test-threads="$TEST_THREADS")
+      else
+        cargo_args+=(-- --test-threads="$TEST_THREADS")
+      fi
+    fi
+    ;;
+  nextest)
+    cargo_args=(cargo nextest run "$@")
+    # nextest uses --test-threads at top level, no -- needed
+    if [[ " $* " != *"--test-threads"* ]]; then
+      cargo_args+=(--test-threads="$TEST_THREADS")
+    fi
+    ;;
+  mutants)
+    cargo_args=(cargo mutants "$@")
+    ;;  # mutants manages its own parallelism
+esac
+
+# --- log setup ---
+mkdir -p "$LOG_DIR"
+ts=$(date -u +%Y%m%dT%H%M%SZ)
+log_file="$LOG_DIR/zz-test_${ts}_$$.log"
+exec > >(tee -a "$log_file") 2>&1
+echo "=== zz-test $subcmd @ $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
+echo "MEM_MAX=$MEM_MAX  TEST_THREADS=$TEST_THREADS  SYSTEMD=$USE_SYSTEMD"
+echo "CMD: ${cargo_args[*]}"
+echo "LOG: $log_file"
+echo
+
+# --- run ---
+exit_code=0
+if [ "$USE_SYSTEMD" = "yes" ]; then
+  echo "[isolation] systemd-run --scope -p MemoryMax=$MEM_MAX"
+  set +e
+  systemd-run --scope --quiet \
+    -p MemoryMax="$MEM_MAX" \
+    -p MemorySwapMax=infinity \
+    -- "${cargo_args[@]}"
+  exit_code=$?
+  set -e
+else
+  echo "[isolation] systemd-run unavailable — running directly (beware OOM)"
+  set +e
+  "${cargo_args[@]}"
+  exit_code=$?
+  set -e
+fi
+
+echo
+echo "=== zz-test exit_code=$exit_code @ $(date -u +%Y-%m-%dT%H:%M:%SZ) ==="
+echo "LOG: $log_file"
+exit "$exit_code"
