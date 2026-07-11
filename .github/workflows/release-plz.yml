@@ -38,7 +38,7 @@ jobs:
           key: release-plz-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Run release-plz
-        uses: release-plz/action@v0.3
+        uses: release-plz/action@v0.5
         with:
           command: release-pr
         env:
