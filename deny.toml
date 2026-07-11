@@ -2,7 +2,8 @@
 # Docs: https://embarkstudios.github.io/cargo-deny/checks/
 
 [licenses]
-# Allow permissive licenses used by ZeroZero and its dependencies
+# Allow permissive licenses used by ZeroZero and its dependencies.
+# Licenses not in this list are denied by default.
 allow = [
     "MIT",
     "Apache-2.0",
@@ -14,16 +15,6 @@ allow = [
     "Unicode-3.0",
     "Zlib",
     "CC0-1.0",
-]
-# Deny copyleft licenses (incompatible with MIT project)
-deny = [
-    "GPL-2.0",
-    "GPL-2.0-with-classpath-exception",
-    "GPL-3.0",
-    "AGPL-3.0",
-    "LGPL-2.0",
-    "LGPL-2.1",
-    "LGPL-3.0",
 ]
 confidence-threshold = 0.8
 
