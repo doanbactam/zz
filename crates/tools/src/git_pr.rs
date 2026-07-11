@@ -129,7 +129,7 @@ pub fn build_pr_args(args: &GitPrArgs) -> Vec<String> {
 }
 
 /// Slugify a task name into a git-safe branch slug, e.g.
-/// `"Git PR creation"` -> `"bl-111-git-pr-creation"`.
+/// `"Git PR creation"` -> `"git-pr-creation"`.
 pub fn slugify_task_name(name: &str) -> String {
     let mut slug = String::new();
     let mut prev_dash = false;
@@ -147,7 +147,7 @@ pub fn slugify_task_name(name: &str) -> String {
 
 /// Create a branch-per-task: `git checkout -b task/<slug>`.
 ///
-/// Returns the resolved branch name (e.g. `"task/bl-111-git-pr-creation"`).
+/// Returns the resolved branch name (e.g. `"task/git-pr-creation"`).
 /// Pure in the sense that it performs no PR/network action — it only
 /// creates a local branch.
 pub async fn create_branch_per_task(
@@ -362,7 +362,7 @@ mod tests {
             body: Some("Implementation of X".to_string()),
             base: "develop".to_string(),
             draft: true,
-            head: Some("task/bl-111".to_string()),
+            head: Some("task/git-pr-creation".to_string()),
             autopush: true,
             remote: "origin".to_string(),
         };
@@ -380,7 +380,7 @@ mod tests {
                 "develop".to_string(),
                 "--draft".to_string(),
                 "--head".to_string(),
-                "task/bl-111".to_string(),
+                "task/git-pr-creation".to_string(),
             ]
         );
     }
@@ -389,7 +389,7 @@ mod tests {
     fn test_slugify_task_name() {
         assert_eq!(
             slugify_task_name("Git PR creation"),
-            "bl-111-git-pr-creation"
+            "git-pr-creation"
         );
         assert_eq!(slugify_task_name("Hello World!!"), "hello-world");
         assert_eq!(slugify_task_name("  spaced  out  "), "spaced-out");
@@ -437,7 +437,7 @@ mod tests {
         let branch = create_branch_per_task(Some(&repo), "Git PR creation")
             .await
             .unwrap();
-        assert_eq!(branch, "task/bl-111-git-pr-creation");
+        assert_eq!(branch, "task/git-pr-creation");
 
         // Verify the branch actually exists and is checked out.
         let out = tokio::process::Command::new("git")
